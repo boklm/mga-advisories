@@ -1,0 +1,9 @@
+[% IF advdb.error -%]
+Error: [% advdb.error %]
+[% ELSE %]
+Advisories updates :
+[% FOREACH report_log IN report_logs -%]
+- [% report_log %]
+[% END -%]
+[% END -%]
+

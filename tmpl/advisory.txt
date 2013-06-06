@@ -1,0 +1,29 @@
+[% USE date -%]
+[%- SET adv = advdb.advisories.$advisory -%]
+[% advisory %] - [% adv.subject %]
+
+Publication date: [% date.format(adv.pubtime, format => '%d %b %Y', gmt => 1) %]
+Type: [% adv.type %]
+Affected Mageia releases: [% adv.src.keys.sort.join(', ') %]
+[% IF adv.CVE -%]
+CVE: [% adv.CVE.join(",\n     ") %]
+[%- END -%]
+
+
+Description:
+[% adv.description -%]
+
+References:
+[% FOREACH ref IN adv.references -%]
+- [% ref %]
+[% END -%]
+
+SRPMS:
+[% FOREACH rel IN adv.src.keys -%]
+[% FOREACH media IN adv.src.$rel.keys -%]
+[% FOREACH srpm IN adv.src.$rel.$media -%]
+- [% rel %]/[% media %]/[% srpm %]
+[% END -%]
+[% END -%]
+[% END -%]
+
