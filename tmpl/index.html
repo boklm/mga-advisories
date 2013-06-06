@@ -1,0 +1,31 @@
+[%- USE date(format='%Y/%m/%d') -%]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Mageia Advisories</title>
+    </head>
+    <body>
+        <h1>Mageia Advisories</h1>
+        <ul>
+            [%- FOREACH adv IN advdb.advisories.keys.sort.reverse -%]
+            <li><a href="[% adv %].txt">[% adv %]</a>: [% advdb.advisories.$adv.subject %]</li>
+            [%- END -%]
+        </ul>
+        <h1>Older Advisories</h1>
+        Older advisories are available on Mageia wiki :
+        <ul>
+            <li><a href="https://wiki.mageia.org/en/Mageia_2_Advisories">Mageia 2 Advisories</a></li>
+            <li><a href="https://wiki.mageia.org/en/Mageia_3_Advisories">Mageia 3 Advisories</a></li>
+        </ul>
+
+        <h1>Work in progress</h1>
+        This website is a work in progress. New versions should provide :
+        <ul>
+            <li>Advisories html pages</li>
+            <li>RSS feeds</li>
+            <li>Per CVE pages</li>
+            <li>Per distribution pages</li>
+            <li>Automatic packages move</li>
+        </ul>
+    </body>
+</html>
