@@ -141,9 +141,15 @@ sub send_report_mail {
     try_to_sendmail($email);
 }
 
+sub dumpdb {
+    my ($advdb) = @_;
+    DumpFile($config->{out_dir} . '/advisories.yaml', $advdb->{advisories});
+}
+
 my %advdb;
 $advdb{advisories} = get_advisories();
 output_pages(\%advdb);
+dumpdb(\%advdb);
 send_adv_mail(\%advdb);
 send_report_mail(\%advdb);
 
