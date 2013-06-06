@@ -14,6 +14,9 @@ my $config_file = '/usr/share/mga-advisories/config';
 my $config = LoadFile($ENV{MGAADV_CONF} || $config_file);
 my $etc_config_file = '/etc/mga-advisories.conf';
 my $etc_config = LoadFile($etc_config_file);
+foreach my $k (keys %$etc_config) {
+    $config->{$k} = $etc_config->{$k};
+}
 
 my @report_logs;
 sub report_log {
@@ -24,10 +27,6 @@ sub report_exit {
     report_log($_[0]);
     send_report_mail({ error => $_[0] });
     exit 1;
-}
-
-foreach my $k (keys %$etc_config) {
-    $config->{$k} = $etc_config->{$k};
 }
 
 sub status_file {
