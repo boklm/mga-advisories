@@ -1,0 +1,16 @@
+[% USE date -%]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>CVE list</title>
+    </head>
+    <body>
+        <h1>CVE list</h1>
+
+        <ul>
+            [% FOREACH CVE IN advdb.by_cve.keys.sort.reverse %]
+            <li><a href="[% basename.CVE(CVE) %].html">[% CVE %]</a></li>
+            [% END %]
+        </ul>
+    </body>
+</html>
