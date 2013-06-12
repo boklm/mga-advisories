@@ -25,6 +25,10 @@ my %basename = (
     pkg => sub { 'pkg_' . $_[0] },
 );
 
+my %tools = (
+    pkgname => sub { $_[0] =~ m/(.+)-[^-]+-[^-]+/; $1; },
+);
+
 my @report_logs;
 sub report_log {
     push @report_logs, @_;
@@ -72,9 +76,9 @@ sub sort_advisories {
                 push @{$advdb->{by_media}{$media}}, $adv;
                 my %pkgs;
                 foreach my $srpm (@{$advdb->{advisories}{$adv}{src}{$rel}{$media}}) {
-                    $srpm =~ m/(.+)-[^-]+-[^-]+/;
-                    push @{$advdb->{by_src}{$1}}, $adv
-                        unless grep { $_ eq $adv } @{$advdb->{by_src}{$1}};
+                    my $pkgname = $tools{pkgname}->($srpm);
+                    push @{$advdb->{by_src}{$pkgname}}, $adv
+                        unless grep { $_ eq $adv } @{$advdb->{by_src}{$pkgname}};
                 }
             }
         }
@@ -102,6 +106,7 @@ sub output_pages {
             advisory => $adv,
             advdb    => $advdb,
             basename => \%basename,
+            tools    => \%tools,
         };
         process_template($template, 'advisory', $vars, $basename{ID}->($adv));
     }
@@ -109,6 +114,7 @@ sub output_pages {
         config   => $config,
         advdb    => $advdb,
         basename => \%basename,
+        tools    => \%tools,
     };
     process_template($template, 'index', $vars, 'index');
 }
@@ -127,6 +133,7 @@ sub send_adv_mail {
             advisory => $adv,
             advdb    => $advdb,
             basename => \%basename,
+            tools    => \%tools,
         };
         process_template($template, 'advisory', $vars, \$mailcontent, 'txt');
         my $email = Email::Simple->create(
