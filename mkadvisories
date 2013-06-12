@@ -75,7 +75,7 @@ sub publish_advisories {
 
 sub sort_advisories {
     my ($advdb) = @_;
-    foreach my $adv (keys $advdb->{advisories}) {
+    foreach my $adv (keys %{$advdb->{advisories}}) {
         push @{$advdb->{by_type}{$advdb->{advisories}{$adv}{type}}}, $adv;
         foreach my $cve (@{$advdb->{advisories}{$adv}{CVE}}) {
             push @{$advdb->{by_cve}{$cve}}, $adv;
