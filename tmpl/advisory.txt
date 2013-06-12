@@ -6,10 +6,9 @@ Publication date: [% date.format(adv.pubtime, format => '%d %b %Y', gmt => 1) %]
 URL: [% config.site_url %]/[% basename.ID(advisory) %].html
 Type: [% adv.type %]
 Affected Mageia releases: [% adv.src.keys.sort.join(', ') %]
-[% IF adv.CVE -%]
+[% IF adv.CVE.list.size != 0 -%]
 CVE: [% adv.CVE.join(",\n     ") %]
-[%- END -%]
-
+[% END -%]
 
 Description:
 [% adv.description -%]

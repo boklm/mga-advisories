@@ -1,3 +1,5 @@
+- advisory.{html,txt}: don't add a CVE line when there is no CVE
+
 Version 0.3
 
 - add file tmpl/CVE.html, missed in previous version
