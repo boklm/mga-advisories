@@ -15,7 +15,7 @@
         [% FOREACH rel IN adv.src.keys.sort %]
         [% sep %]
         [% SET sep = ', ' %]
-        <a href="[% rel %].html">[% rel %]</a>
+        <a href="[% basename.rel(rel) %].html">[% rel %]</a>
         [% END %]
         <br />
 
@@ -25,7 +25,7 @@
         [% FOREACH cve IN adv.CVE %]
         [% sep %]
         [% SET sep = ', ' %]
-        <a href="[% cve %].html">[% cve %]</a>
+        <a href="[% basename.CVE(cve) %].html">[% cve %]</a>
         [% END %]
         [% END %]
 

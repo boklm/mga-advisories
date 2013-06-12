@@ -18,6 +18,13 @@ foreach my $k (keys %$etc_config) {
     $config->{$k} = $etc_config->{$k};
 }
 
+my %basename = (
+    CVE => sub { $_[0] },
+    ID  => sub { $_[0] },
+    rel => sub { $_[0] },
+    pkg => sub { 'pkg_' . $_[0] },
+);
+
 my @report_logs;
 sub report_log {
     push @report_logs, @_;
@@ -94,12 +101,14 @@ sub output_pages {
             config   => $config,
             advisory => $adv,
             advdb    => $advdb,
+            basename => \%basename,
         };
-        process_template($template, 'advisory', $vars, $adv);
+        process_template($template, 'advisory', $vars, $basename{ID}->($adv));
     }
     my $vars = {
         config   => $config,
         advdb    => $advdb,
+        basename => \%basename,
     };
     process_template($template, 'index', $vars, 'index');
 }
@@ -117,6 +126,7 @@ sub send_adv_mail {
             config   => $config,
             advisory => $adv,
             advdb    => $advdb,
+            basename => \%basename,
         };
         process_template($template, 'advisory', $vars, \$mailcontent, 'txt');
         my $email = Email::Simple->create(
