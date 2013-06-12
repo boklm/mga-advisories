@@ -63,6 +63,16 @@ sub get_advisories {
     return \%advisories;
 }
 
+sub publish_advisories {
+    my ($advdb) = @_;
+    foreach my $adv (keys %{$advdb->{advisories}}) {
+        next if $advdb->{advisories}{$adv}{status}{published};
+        $advdb->{advisories}{$adv}{status}{published} =
+                $advdb->{advisories}{$adv}{pubtime} || time();
+        save_status($advdb, $adv);
+    }
+}
+
 sub sort_advisories {
     my ($advdb) = @_;
     foreach my $adv (keys $advdb->{advisories}) {
@@ -200,6 +210,7 @@ sub dumpdb {
 
 my %advdb;
 $advdb{advisories} = get_advisories();
+publish_advisories(\%advdb);
 sort_advisories(\%advdb);
 output_pages(\%advdb);
 dumpdb(\%advdb);
