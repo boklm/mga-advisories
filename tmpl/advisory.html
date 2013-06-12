@@ -1,0 +1,57 @@
+[% USE date -%]
+[%- SET adv = advdb.advisories.$advisory -%]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Mageia Advisory: [% advisory %] - [% adv.subject %]</title>
+    </head>
+    <body>
+        <h1>[% advisory %] - [% adv.subject %]</h1>
+
+        Publication date: [% date.format(adv.pubtime, format => '%d %b %Y', gmt => 1) %]<br />
+        Type: [% adv.type %]<br />
+        Affected Mageia releases :
+        [% SET sep = '' %]
+        [% FOREACH rel IN adv.src.keys.sort %]
+        [% sep %]
+        [% SET sep = ', ' %]
+        <a href="[% rel %].html">[% rel %]</a>
+        [% END %]
+        <br />
+
+        [% SET sep = '' %]
+        [% IF adv.CVE %]
+        CVE:
+        [% FOREACH cve IN adv.CVE %]
+        [% sep %]
+        [% SET sep = ', ' %]
+        <a href="[% cve %].html">[% cve %]</a>
+        [% END %]
+        [% END %]
+
+        <h2>Description</h2>
+        <pre>
+        [%- adv.description -%]
+        </pre>
+
+        <h2>References</h2>
+        <ul>
+            [% FOREACH ref IN adv.references -%]
+            <li><a href="[% ref %]">[% ref %]</a></li>
+            [% END %]
+        </ul>
+
+        <h2>SRPMS</h2>
+        [% FOREACH rel IN adv.src.keys -%]
+        [% FOREACH media IN adv.src.$rel.keys -%]
+        <h3>[% rel %]/[% media %]</h3>
+        <ul>
+        [% FOREACH srpm IN adv.src.$rel.$media -%]
+                <li>[% srpm %]</li>
+        [% END -%]
+        </ul>
+        [% END -%]
+        [% END -%]
+
+    </body>
+</html>

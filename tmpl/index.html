@@ -8,7 +8,7 @@
         <h1>Mageia Advisories</h1>
         <ul>
             [%- FOREACH adv IN advdb.advisories.keys.sort.reverse -%]
-            <li><a href="[% adv %].txt">[% adv %]</a>: [% advdb.advisories.$adv.subject %]</li>
+            <li><a href="[% adv %].html">[% adv %]</a>: [% advdb.advisories.$adv.subject %]</li>
             [%- END -%]
         </ul>
         <h1>Older Advisories</h1>
