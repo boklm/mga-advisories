@@ -7,9 +7,10 @@
     <body>
         <h1>Mageia Advisories</h1>
         <ul>
-            [%- FOREACH adv IN advdb.advisories.keys.sort.reverse -%]
-            <li><a href="[% basename.ID(adv) %].html">[% adv %]</a>: [% advdb.advisories.$adv.subject %]</li>
+            [% FOREACH rel IN advdb.by_rel.keys.sort -%]
+            <li><a href="[% basename.rel(rel) %].html">Mageia [% rel %] advisories</a></li>
             [%- END -%]
+            <li><a href="advisories.html">All advisories</a></li>
         </ul>
         <h1>Older Advisories</h1>
         Older advisories are available on Mageia wiki :
@@ -20,15 +21,5 @@
 
         <h1>DB Dump</h1>
         A dump of all advisories is available as <a href="advisories.yaml">a yaml file</a>.
-
-        <h1>Work in progress</h1>
-        This website is a work in progress. New versions should provide :
-        <ul>
-            <li>Advisories html pages</li>
-            <li>RSS feeds</li>
-            <li>Per CVE pages</li>
-            <li>Per distribution pages</li>
-            <li>Automatic packages move</li>
-        </ul>
     </body>
 </html>

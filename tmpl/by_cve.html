@@ -1,0 +1,12 @@
+[% USE date -%]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>[% CVE %]</title>
+    </head>
+    <body>
+        <h1><a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% CVE %]">[% CVE %]</a></h1>
+
+        [% INCLUDE advisories_table.html advlst = advdb.by_cve.$CVE.sort.reverse %]
+    </body>
+</html>

@@ -1,0 +1,12 @@
+[% USE date -%]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Mageia Advisories</title>
+    </head>
+    <body>
+        <h1>Mageia Advisories</h1>
+
+        [% INCLUDE advisories_table.html advlst = advdb.advisories.keys.sort.reverse %]
+    </body>
+</html>

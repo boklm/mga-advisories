@@ -1,0 +1,65 @@
+        <table border='0'>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Source Package(s)
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Affected release(s)
+                </th>
+                <th>
+                    CVE
+                </th>
+            </tr>
+
+            [% FOREACH adv IN advlst %]
+            <tr>
+                <td width='100'>
+                    [% date.format(advdb.advisories.$adv.pubtime, format => '%Y-%m-%d', gmt => 1) %]
+                </td>
+                <td width='150'><a href="[% basename.ID(adv) %].html">[% adv %]</a></td>
+                <td>
+                    [% SET sep = '' %]
+                    [% SET pkgs = {} %]
+                    [% FOREACH rel IN advdb.advisories.$adv.src.keys %]
+                        [% FOREACH media IN advdb.advisories.$adv.src.$rel.keys %]
+                                [% FOREACH srpm IN advdb.advisories.$adv.src.$rel.$media %]
+                                [% SET srcname = tools.pkgname(srpm) %]
+                                [% IF ! pkgs.$srcname %]
+                                        [% SET pkgs.$srcname = 1 %]
+                                        [% sep %]
+                                        [% SET sep = ', ' %]
+                                        <a href="[% basename.src(srcname) %].html">[% srcname %]</a>
+                                [% END %]
+                                [% END %]
+                        [% END %]
+                    [% END %]
+                </td>
+                <td>[% advdb.advisories.$adv.type %]</td>
+                <td>
+                    [% SET sep = '' %]
+                    [% FOREACH rel IN advdb.advisories.$adv.src.keys %]
+                    [% sep %]
+                    [% SET sep = ', ' %]
+                    <a href="[% basename.rel(rel) %].html">[% rel %]</a>
+                    [% END %]
+                </td>
+                <td>
+                    [% SET sep = '' %]
+                    [% FOREACH cve IN advdb.advisories.$adv.CVE %]
+                    [% sep %]
+                    [% SET sep = ', ' %]
+                    <a href="[% basename.CVE(cve) %].html">[% cve %]</a>
+                    [% END %]
+                </td>
+            </tr>
+            [% END %]
+        </table>
