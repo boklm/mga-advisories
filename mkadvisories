@@ -52,6 +52,28 @@ sub get_advisories {
     return \%advisories;
 }
 
+sub sort_advisories {
+    my ($advdb) = @_;
+    foreach my $adv (keys $advdb->{advisories}) {
+        push @{$advdb->{by_type}{$advdb->{advisories}{$adv}{type}}}, $adv;
+        foreach my $cve (@{$advdb->{advisories}{$adv}{CVE}}) {
+            push @{$advdb->{by_cve}{$cve}}, $adv;
+        }
+        foreach my $rel (keys %{$advdb->{advisories}{$adv}{src}}) {
+            push @{$advdb->{by_rel}{$rel}}, $adv;
+            foreach my $media (keys %{$advdb->{advisories}{$adv}{src}{$rel}}) {
+                push @{$advdb->{by_media}{$media}}, $adv;
+                my %pkgs;
+                foreach my $srpm (@{$advdb->{advisories}{$adv}{src}{$rel}{$media}}) {
+                    $srpm =~ m/(.+)-[^-]+-[^-]+/;
+                    push @{$advdb->{by_src}{$1}}, $adv
+                        unless grep { $_ eq $adv } @{$advdb->{by_src}{$1}};
+                }
+            }
+        }
+    }
+}
+
 sub process_template {
     my ($template, $src, $vars, $dest, $ext) = @_;
     foreach my $extension ($ext ? $ext : @{$config->{output_format}}) {
@@ -147,6 +169,7 @@ sub dumpdb {
 
 my %advdb;
 $advdb{advisories} = get_advisories();
+sort_advisories(\%advdb);
 output_pages(\%advdb);
 dumpdb(\%advdb);
 send_adv_mail(\%advdb);
