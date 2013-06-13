@@ -5,33 +5,36 @@ use MGA::Advisories;
 use Template;
 
 my %actions = (
-    mksite => \&mksite,
-    new    => \&newadv,
-    usage  => \&usage,
-);
-
-my %usage = (
-    mksite => <<END,
+    mksite => {
+        run   => \&mksite,
+        usage => <<END,
 $0 mksite
 
 Generates the advisories web site
 END
-    usage => <<END,
-$0 usage [action]
-
-Show action usage
-END
-    new   => <<END,
+    },
+    new    => {
+        run   => \&newadv,
+        usage => <<END,
 $0 new [type] [bugnum]
 
 Create a new advisory file. [type] should be security or bugfix and
 [bugnum] is the bugzilla bug number.
 END
+    },
+    usage  => {
+        run   => \&usage,
+        usage => <<END,
+$0 usage [action]
+
+Show action usage
+END
+    },
 );
 
 sub usage {
-    if ($_[1] && $usage{$_[1]}) {
-        print STDERR $usage{$_[1]};
+    if ($_[1] && $actions{$_[1]}) {
+        print STDERR $actions{$_[1]}->{usage};
     } else {
         print STDERR "$0 [action] [options]\n";
         print STDERR "$0 usage [action]\n\n";
@@ -68,5 +71,5 @@ sub newadv {
 if (@ARGV == 0 || !$actions{$ARGV[0]}) {
     usageexit();
 }
-$actions{$ARGV[0]}->(@ARGV);
+$actions{$ARGV[0]}->{run}->(@ARGV);
 
