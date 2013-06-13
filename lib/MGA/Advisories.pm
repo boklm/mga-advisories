@@ -152,7 +152,7 @@ sub sort_advisories {
             $advdb->{$by}{$k} = [ adv_sort($advdb, @{$advdb->{$by}{$k}}) ];
         }
     }
-    $advdb->{sorted} = [ adv_sort($advdb, keys $advdb->{advisories}) ];
+    $advdb->{sorted} = [ adv_sort($advdb, keys %{$advdb->{advisories}}) ];
 }
 
 sub process_template {
