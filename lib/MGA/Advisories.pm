@@ -118,6 +118,15 @@ sub publish_advisories {
     }
 }
 
+sub adv_sort {
+    my $advdb = shift;
+    sort {
+        my $pa = $advdb->{advisories}{$a}{status}{published};
+        my $pb = $advdb->{advisories}{$b}{status}{published};
+        return $pa == $pb ? $b cmp $a : $pb cmp $pa;
+    } @_;
+}
+
 sub sort_advisories {
     my ($advdb) = @_;
     foreach my $adv (keys %{$advdb->{advisories}}) {
@@ -138,6 +147,12 @@ sub sort_advisories {
             }
         }
     }
+    foreach my $by ('by_type', 'by_cve', 'by_rel', 'by_media', 'by_src') {
+        foreach my $k (keys %{$advdb->{$by}}) {
+            $advdb->{$by}{$k} = [ adv_sort($advdb, @{$advdb->{$by}{$k}}) ];
+        }
+    }
+    $advdb->{sorted} = [ adv_sort($advdb, keys $advdb->{advisories}) ];
 }
 
 sub process_template {

@@ -7,6 +7,6 @@
     <body>
         <h1>Mageia Advisories</h1>
 
-        [% INCLUDE advisories_table.html advlst = advdb.advisories.keys.sort.reverse %]
+        [% INCLUDE advisories_table.html advlst = advdb.sorted %]
     </body>
 </html>

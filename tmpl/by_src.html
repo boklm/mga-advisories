@@ -7,6 +7,6 @@
     <body>
         <h1>Mageia advisories for package [% src %]</h1>
 
-        [% INCLUDE advisories_table.html advlst = advdb.by_src.$src.sort.reverse %]
+        [% INCLUDE advisories_table.html advlst = advdb.by_src.$src %]
     </body>
 </html>
