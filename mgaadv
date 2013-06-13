@@ -3,8 +3,20 @@
 use strict;
 use MGA::Advisories;
 use Template;
+use YAML qw(LoadFile DumpFile);
+use File::Basename;
 
 my %actions = (
+    initqaconf => {
+        run   => \&initqaconf,
+        descr => 'Initialize configuration for QA team members',
+        usage => <<END,
+$0 initqaconf
+
+Initialize a default configuration for QA team members, and open an
+editor on the file.
+END
+    },
     list   => {
         run   => \&listadv,
         descr => 'List advisories',
@@ -88,13 +100,14 @@ sub mksite {
     MGA::Advisories::send_report_mail(\%advdb);
 }
 
+sub editor { $ENV{EDITOR} || $ENV{VISUAL} || '/usr/bin/editor' }
+
 sub newadv {
     usageexit('usage', $_[0]) unless @_ == 3;
     my ($new, $type, $bugnum) = @_;
     my $file = MGA::Advisories::newadv($type, $bugnum);
     if ($file) {
-        my $editor = $ENV{EDITOR} || $ENV{VISUAL} || '/usr/bin/editor';
-        system($editor, $file);
+        system(editor, $file);
     }
 }
 
@@ -116,6 +129,33 @@ sub showadv {
 sub updateadv {
     usageexit('usage', $_[0]) unless @_ == 1;
     MGA::Advisories::download_advisories;
+}
+
+sub initqaconf {
+    my $c = $MGA::Advisories::home_config_file;
+    if (-f $c) {
+        print STDERR "File $c already exists\n";
+        exit 1;
+    }
+    my %defaultconf = (
+        mode           => 'qa',
+        out_dir        => $ENV{HOME} . '/mageia-advisories/html',
+        status_dir     => $ENV{HOME} . '/mageia-advisories/status',
+        advisories_dir => $ENV{HOME} . '/mageia-advisories/advisories',
+    );
+    DumpFile($c, \%defaultconf);
+    system(editor, $c);
+    my $newconf = LoadFile($c);
+    foreach my $n ('out_dir', 'status_dir', 'advisories_dir') {
+        mkdir dirname($newconf->{$n}) unless -d dirname($newconf->{$n});
+    }
+    foreach my $n ('out_dir', 'status_dir') {
+        mkdir $newconf->{$n} unless -d $newconf->{$n};
+    }
+    if (! -d $newconf->{advisories_dir}) {
+        system('svn', 'co', $MGA::Advisories::config->{advisories_repo_url},
+            $newconf->{advisories_dir});
+    }
 }
 
 if (@ARGV == 0 || !$actions{$ARGV[0]}) {

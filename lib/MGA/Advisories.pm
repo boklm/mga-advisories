@@ -12,9 +12,9 @@ use LWP::UserAgent;
 use File::Basename;
 #use Data::Dump qw(dd);
 
-my $config_file = '/usr/share/mga-advisories/config';
-my $config = LoadFile($ENV{MGAADV_CONF} || $config_file);
-my $home_config_file = $ENV{HOME} . '/.mga-advisories/mga-advisories.conf';
+our $config_file = '/usr/share/mga-advisories/config';
+our $config = LoadFile($ENV{MGAADV_CONF} || $config_file);
+our $home_config_file = $ENV{HOME} . '/.mga-advisories/mga-advisories.conf';
 my $custom_config_file = -f $home_config_file ? $home_config_file 
         : '/etc/mga-advisories.conf';
 my $custom_config = LoadFile($custom_config_file);

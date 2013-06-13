@@ -4,6 +4,7 @@
 - load config from home directory if file exists
 - add option to load advisories db from a file dump instead of a directory
 - add 'update' command to download new advisories db
+- add 'initqaconf' command to initialize config for QA team members
 
 Version 0.4
 
