@@ -1,6 +1,7 @@
 - add 'new' command to add a new advisory
 - add 'list' command to list advisories
 - add 'show' command to show an advisory
+- load config from home directory if file exists
 
 Version 0.4
 

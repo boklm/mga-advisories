@@ -12,10 +12,12 @@ use Email::Simple::Creator;
 
 my $config_file = '/usr/share/mga-advisories/config';
 my $config = LoadFile($ENV{MGAADV_CONF} || $config_file);
-my $etc_config_file = '/etc/mga-advisories.conf';
-my $etc_config = LoadFile($etc_config_file);
-foreach my $k (keys %$etc_config) {
-    $config->{$k} = $etc_config->{$k};
+my $home_config_file = $ENV{HOME} . '/.mga-advisories/mga-advisories.conf';
+my $custom_config_file = -f $home_config_file ? $home_config_file 
+        : '/etc/mga-advisories.conf';
+my $custom_config = LoadFile($custom_config_file);
+foreach my $k (keys %$custom_config) {
+    $config->{$k} = $custom_config->{$k};
 }
 
 my %basename = (
