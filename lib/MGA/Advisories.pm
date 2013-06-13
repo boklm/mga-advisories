@@ -227,4 +227,10 @@ sub newadv {
     return $file;
 }
 
+sub listadv {
+    my ($advdb) = @_;
+    print map { "$_: $advdb->{advisories}{$_}{subject}\n" } 
+        sort keys %{$advdb->{advisories}};
+}
+
 1;
