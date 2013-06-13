@@ -191,6 +191,7 @@ sub output_pages {
 sub send_adv_mail {
     my ($advdb) = @_;
     return unless $config->{send_adv_mail} eq 'yes';
+    return unless $config->{mode} eq 'site';
     my $template = Template->new(
         INCLUDE_PATH => $config->{tmpl_dir},
     );
@@ -226,6 +227,7 @@ sub send_adv_mail {
 sub send_report_mail {
     my ($advdb) = @_;
     return unless $config->{send_report_mail} eq 'yes';
+    return unless $config->{mode} eq 'site';
     return unless @report_logs;
     my $template = Template->new(
         INCLUDE_PATH => $config->{tmpl_dir},
