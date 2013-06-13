@@ -1,0 +1,19 @@
+type: [% type %]
+subject: Updated [package] package fixes [something]
+[% IF type == 'security' -%]
+CVE:
+ - first CVE
+ - second CVE
+[% END -%]
+src:
+  2:
+   core:
+     - something-1.0-1.mga2
+  3:
+   core:
+     - something-1.0-1.mga3
+description: |
+  Advisory text to describe the update.
+  Wrap lines at ~75 chars.
+references:
+ - https://bugs.mageia.org/show_bug.cgi?id=[% bugnum %]

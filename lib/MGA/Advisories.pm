@@ -208,4 +208,23 @@ sub dumpdb {
     DumpFile($config->{out_dir} . '/advisories.yaml', $advdb->{advisories});
 }
 
+sub newadv {
+    my ($type, $bugnum) = @_;
+    my $file = $config->{advisories_dir} . '/' . $bugnum . '.adv';
+    if (-f $file) {
+        print STDERR "File $file already exists\n";
+        return undef;
+    }
+    my $template = Template->new(
+        INCLUDE_PATH => $config->{tmpl_dir},
+        OUTPUT_PATH  => $config->{advisories_dir},
+    );
+    my $vars = {
+        type   => $type,
+        bugnum => $bugnum,
+    };
+    process_template($template, 'newadvisory', $vars, $bugnum, 'adv');
+    return $file;
+}
+
 1;

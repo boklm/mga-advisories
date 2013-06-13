@@ -3,7 +3,7 @@ VERSION=0.4
 PROJECTNAME=mga-advisories
 BINFILES=mkadvisories
 CFGFILES=mga-advisories.conf
-TMPLFILES=tmpl/*.html tmpl/*.txt
+TMPLFILES=tmpl/*.html tmpl/*.txt tmpl/*.adv
 
 sysconfdir=/etc
 bindir=/usr/bin

@@ -2,9 +2,11 @@
 
 use strict;
 use MGA::Advisories;
+use Template;
 
 my %actions = (
     mksite => \&mksite,
+    new    => \&newadv,
     usage  => \&usage,
 );
 
@@ -19,6 +21,12 @@ $0 usage [action]
 
 Show action usage
 END
+    new   => <<END,
+$0 new [type] [bugnum]
+
+Create a new advisory file. [type] should be security or bugfix and
+[bugnum] is the bugzilla bug number.
+END
 );
 
 sub usage {
@@ -30,6 +38,10 @@ sub usage {
         print STDERR "Available actions:\n";
         print STDERR map { " - $_\n" } keys %actions;
     }
+}
+sub usageexit {
+    usage(@_);
+    exit 1;
 }
 
 sub mksite {
@@ -43,9 +55,18 @@ sub mksite {
     MGA::Advisories::send_report_mail(\%advdb);
 }
 
+sub newadv {
+    usageexit('usage', $_[0]) unless @_ == 3;
+    my ($new, $type, $bugnum) = @_;
+    my $file = MGA::Advisories::newadv($type, $bugnum);
+    if ($file) {
+        my $editor = $ENV{EDITOR} || $ENV{VISUAL} || '/usr/bin/editor';
+        system($editor, $file);
+    }
+}
+
 if (@ARGV == 0 || !$actions{$ARGV[0]}) {
-    usage();
-    exit 1;
+    usageexit();
 }
 $actions{$ARGV[0]}->(@ARGV);
 

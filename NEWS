@@ -1,3 +1,5 @@
+- add command to add a new advisory
+
 Version 0.4
 
 - advisory.{html,txt}: don't add a CVE line when there is no CVE
