@@ -7,6 +7,7 @@ use Template;
 my %actions = (
     mksite => {
         run   => \&mksite,
+        descr => 'Generates the advisories web site',
         usage => <<END,
 $0 mksite
 
@@ -15,6 +16,7 @@ END
     },
     new    => {
         run   => \&newadv,
+        descr => 'Create a new advisory file',
         usage => <<END,
 $0 new [type] [bugnum]
 
@@ -24,6 +26,7 @@ END
     },
     usage  => {
         run   => \&usage,
+        descr => 'Show usage informations for an action',
         usage => <<END,
 $0 usage [action]
 
@@ -39,7 +42,7 @@ sub usage {
         print STDERR "$0 [action] [options]\n";
         print STDERR "$0 usage [action]\n\n";
         print STDERR "Available actions:\n";
-        print STDERR map { " - $_\n" } keys %actions;
+        print STDERR map { " - $_ : $actions{$_}->{descr}\n" } keys %actions;
     }
 }
 sub usageexit {
