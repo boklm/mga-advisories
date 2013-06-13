@@ -3,12 +3,49 @@
 use strict;
 use MGA::Advisories;
 
-my %advdb;
-$advdb{advisories} = MGA::Advisories::get_advisories();
-MGA::Advisories::publish_advisories(\%advdb);
-MGA::Advisories::sort_advisories(\%advdb);
-MGA::Advisories::output_pages(\%advdb);
-MGA::Advisories::dumpdb(\%advdb);
-MGA::Advisories::send_adv_mail(\%advdb);
-MGA::Advisories::send_report_mail(\%advdb);
+my %actions = (
+    mksite => \&mksite,
+    usage  => \&usage,
+);
+
+my %usage = (
+    mksite => <<END,
+$0 mksite
+
+Generates the advisories web site
+END
+    usage => <<END,
+$0 usage [action]
+
+Show action usage
+END
+);
+
+sub usage {
+    if ($_[1] && $usage{$_[1]}) {
+        print STDERR $usage{$_[1]};
+    } else {
+        print STDERR "$0 [action] [options]\n";
+        print STDERR "$0 usage [action]\n\n";
+        print STDERR "Available actions:\n";
+        print STDERR map { " - $_\n" } keys %actions;
+    }
+}
+
+sub mksite {
+    my %advdb;
+    $advdb{advisories} = MGA::Advisories::get_advisories();
+    MGA::Advisories::publish_advisories(\%advdb);
+    MGA::Advisories::sort_advisories(\%advdb);
+    MGA::Advisories::output_pages(\%advdb);
+    MGA::Advisories::dumpdb(\%advdb);
+    MGA::Advisories::send_adv_mail(\%advdb);
+    MGA::Advisories::send_report_mail(\%advdb);
+}
+
+if (@ARGV == 0 || !$actions{$ARGV[0]}) {
+    usage();
+    exit 1;
+}
+$actions{$ARGV[0]}->(@ARGV);
 
