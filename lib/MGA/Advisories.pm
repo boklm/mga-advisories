@@ -52,7 +52,7 @@ sub save_status {
     DumpFile($statusfile, $advdb->{advisories}{$adv}{status});
 }
 
-sub get_advisories {
+sub get_advisories_from_dir {
     my %advisories;
     foreach my $advfile (glob "$config->{advisories_dir}/*.adv") {
         my $adv = LoadFile($advfile);
@@ -63,6 +63,16 @@ sub get_advisories {
         $adv->{status} = -f $statusfile ? LoadFile($statusfile) : {};
     }
     return \%advisories;
+}
+
+sub get_advisories_from_dump {
+    return LoadFile($_[0] || $config->{advdv_dumpfile}
+        || $ENV{HOME} . '/.mga-advisories/advisories.yaml');
+}
+
+sub get_advisories {
+    return $config->{mode} eq 'dump' ? get_advisories_from_dump
+        : get_advisories_from_dir;
 }
 
 sub publish_advisories {

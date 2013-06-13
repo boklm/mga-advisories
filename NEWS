@@ -2,6 +2,7 @@
 - add 'list' command to list advisories
 - add 'show' command to show an advisory
 - load config from home directory if file exists
+- add option to load advisories db from a file dump instead of a directory
 
 Version 0.4
 
