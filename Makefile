@@ -1,7 +1,7 @@
 VERSION=0.4
 
 PROJECTNAME=mga-advisories
-BINFILES=mkadvisories
+BINFILES=mgaadv
 CFGFILES=mga-advisories.conf
 TMPLFILES=tmpl/*.html tmpl/*.txt tmpl/*.adv
 
@@ -10,6 +10,7 @@ bindir=/usr/bin
 sharedir=/usr/share
 projectdir=$(sharedir)/$(PROJECTNAME)
 tmpldir=$(projectdir)/tmpl
+perldir=/usr/lib/perl5/site_perl
 
 all:
 
@@ -20,6 +21,8 @@ install:
 	install -m 644 $(CFGFILES) $(DESTDIR)$(sysconfdir)
 	install -m 644 $(TMPLFILES) $(DESTDIR)$(tmpldir)
 	install -m 644 config_default $(DESTDIR)$(projectdir)/config
+	install -d $(DESTDIR)$(perldir)/MGA
+	install -m 644 lib/MGA/Advisories.pm $(DESTDIR)$(perldir)/MGA
 
 tar:
 	git archive --format=tar --prefix $(PROJECTNAME)-$(VERSION)/ HEAD | \
