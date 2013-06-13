@@ -1,4 +1,5 @@
 mode: dump
+dump_url: http://advisories.mageia.org/advisories.yaml
 advisories_dir: /var/lib/mga-advisories/advisories
 status_dir: /var/lib/mga-advisories/status
 tmpl_dir: /usr/share/mga-advisories/tmpl

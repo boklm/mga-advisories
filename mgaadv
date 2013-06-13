@@ -42,6 +42,15 @@ $0 show [ID]
 Show an advisory.
 END
     },
+    update => {
+        run   => \&updateadv,
+        descr => 'Update the advisories database',
+        usage => <<END,
+$0 update
+
+Update the advisories database.
+END
+    },
     usage  => {
         run   => \&usage,
         descr => 'Show usage informations for an action',
@@ -102,6 +111,11 @@ sub showadv {
     my %advdb;
     $advdb{advisories} = MGA::Advisories::get_advisories();
     MGA::Advisories::showadv(\%advdb, $adv);
+}
+
+sub updateadv {
+    usageexit('usage', $_[0]) unless @_ == 1;
+    MGA::Advisories::download_advisories;
 }
 
 if (@ARGV == 0 || !$actions{$ARGV[0]}) {

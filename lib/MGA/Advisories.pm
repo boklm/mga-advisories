@@ -2,12 +2,14 @@ package MGA::Advisories;
 
 use warnings;
 use strict;
-use YAML qw(LoadFile DumpFile);
+use YAML qw(LoadFile DumpFile Load);
 use Template;
 use DateTime;
 use Email::Sender::Simple qw(try_to_sendmail);
 use Email::Simple;
 use Email::Simple::Creator;
+use LWP::UserAgent;
+use File::Basename;
 #use Data::Dump qw(dd);
 
 my $config_file = '/usr/share/mga-advisories/config';
@@ -65,14 +67,45 @@ sub get_advisories_from_dir {
     return \%advisories;
 }
 
+sub advdb_dumpfile {
+    $config->{advdb_dumpfile} || $ENV{HOME} . '/.mga-advisories/advisories.yaml';
+}
+
 sub get_advisories_from_dump {
-    return LoadFile($_[0] || $config->{advdv_dumpfile}
-        || $ENV{HOME} . '/.mga-advisories/advisories.yaml');
+    my $advfile = advdb_dumpfile;
+    return -f $advfile ? LoadFile($advfile) : {};
 }
 
 sub get_advisories {
     return $config->{mode} eq 'dump' ? get_advisories_from_dump
         : get_advisories_from_dir;
+}
+
+sub download_advisories {
+    my $oldadvisories = get_advisories_from_dump;
+    my $ua = LWP::UserAgent->new;
+    my $resp = $ua->get($config->{dump_url});
+    die "Error loading $config->{dump_url}" unless $resp->is_success;
+    my $newadvisories = Load($resp->decoded_content);
+    my @newadv = grep { ! $oldadvisories->{$_} } keys %$newadvisories;
+    #dd \@newadv;
+    if (@newadv) {
+        my %n;
+        my @v = @{$newadvisories}{@newadv};
+        @n{@newadv} = @v;
+        print "New advisories have been downloaded :\n";
+        listadv({advisories => \%n});
+    } else {
+        print "No new advisories available\n";
+    }
+    if (!-d dirname(advdb_dumpfile)) {
+        mkdir dirname(advdb_dumpfile)
+                || die "Error creating directory " . dirname(advdb_dumpfile);
+    }
+    open(my $fh, '>', advdb_dumpfile)
+        || die "Could not open " . advdb_dumpfile;
+    print $fh $resp->decoded_content;
+    close $fh;
 }
 
 sub publish_advisories {
