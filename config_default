@@ -7,9 +7,5 @@ output_format:
  - txt
  - html
 out_dir: /var/lib/mga-advisories/out
-adv_mail_to: updates-announce@ml.mageia.org
-adv_mail_from: Mageia Updates <buildsystem-daemon@mageia.org>
-report_mail_to: qa-reports@ml.mageia.org
-report_mail_from: Mageia Advisories <buildsystem-daemon@mageia.org>
 site_url: http://advisories.mageia.org
 advisories_repo_url: svn+ssh://svn.mageia.org/svn/advisories
