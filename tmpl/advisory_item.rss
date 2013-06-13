@@ -1,0 +1,56 @@
+[% SET advisory = advdb.advisories.$adv -%]
+        <item>
+            <title>[% adv %] - [% advisory.subject %]</title>
+            <link>[% config.site_url %]/[% basename.ID(adv) %].html</link>
+            <guid isPermaLink="false">[% adv %]</guid>
+            <pubDate>[% date.format(advisory.status.published, format => '%a, %d %b %Y %H:%M:%S', gmt => 1) %] GMT</pubDate>
+            <category>[% advisory.type %]</category>
+            <description>
+
+        Publication date: [% date.format(advisory.pubtime, format => '%d %b %Y', gmt => 1) %]&lt;br /&gt;
+        Type: [% advisory.type %]&lt;br /&gt;
+        Affected Mageia releases :
+        [% SET sep = '' %]
+        [% FOREACH rel IN advisory.src.keys.sort %]
+        [% sep %]
+        [% SET sep = ', ' %]
+        &lt;a href="[% basename.rel(rel) %].html"&gt;[% rel %]&lt;/a&gt;
+        [% END %]
+        &lt;br /&gt;
+
+        [% SET sep = '' %]
+        [% IF advisory.CVE.list.size != 0 %]
+        CVE:
+        [% FOREACH cve IN advisory.CVE %]
+        [% sep %]
+        [% SET sep = ', ' %]
+        &lt;a href="[% basename.CVE(cve) %].html"&gt;[% cve %]&lt;/a&gt;
+        [% END %]
+        [% END %]
+
+        &lt;h2&gt;Description&lt;/h2&gt;
+        &lt;pre&gt;
+        [%- advisory.description -%]
+        &lt;/pre&gt;
+
+        &lt;h2&gt;References&lt;/h2&gt;
+        &lt;ul&gt;
+            [% FOREACH ref IN advisory.references -%]
+            &lt;li&gt;&lt;a href="[% ref %]"&gt;[% ref %]&lt;/a&gt;&lt;/li&gt;
+            [% END %]
+        &lt;/ul&gt;
+
+        &lt;h2&gt;SRPMS&lt;/h2&gt;
+        [% FOREACH rel IN advisory.src.keys -%]
+        [% FOREACH media IN advisory.src.$rel.keys -%]
+        &lt;h3&gt;[% rel %]/[% media %]&lt;/h3&gt;
+        &lt;ul&gt;
+        [% FOREACH srpm IN advisory.src.$rel.$media -%]
+                &lt;li&gt;[% srpm %]&lt;/li&gt;
+        [% END -%]
+        &lt;/ul&gt;
+        [% END -%]
+        [% END -%]
+
+            </description>
+        </item>

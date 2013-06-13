@@ -3,7 +3,7 @@ VERSION=0.4
 PROJECTNAME=mga-advisories
 BINFILES=mgaadv
 CFGFILES=mga-advisories.conf
-TMPLFILES=tmpl/*.html tmpl/*.txt tmpl/*.adv
+TMPLFILES=tmpl/*.html tmpl/*.txt tmpl/*.adv tmpl/*.rss
 
 sysconfdir=/etc
 bindir=/usr/bin

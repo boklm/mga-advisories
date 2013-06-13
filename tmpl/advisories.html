@@ -3,9 +3,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Mageia Advisories</title>
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="[% config.site_url %]/advisories.rss" />
     </head>
     <body>
-        <h1>Mageia Advisories</h1>
+        <h1>Mageia Advisories <a href="advisories.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></h1>
 
         [% INCLUDE advisories_table.html advlst = advdb.sorted %]
     </body>

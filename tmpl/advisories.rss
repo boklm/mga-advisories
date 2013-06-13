@@ -1,0 +1,17 @@
+[%- USE date -%]
+<?xml version="1.0"?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Mageia Advisories</title>
+        <link>[% config.site_url %]</link>
+        <description>Mageia Advisories</description>
+        <language>en</language>
+
+        <atom:link href="[% config.site_url %]/advisories.rss" rel="self" type="application/rss+xml" />
+
+        [%- FOR adv IN advdb.sorted -%]
+        [% INCLUDE advisory_item.rss %]
+        [%- END -%]
+    </channel>
+</rss>

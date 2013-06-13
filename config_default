@@ -6,6 +6,7 @@ tmpl_dir: /usr/share/mga-advisories/tmpl
 output_format:
  - txt
  - html
+ - rss
 out_dir: /var/lib/mga-advisories/out
 site_url: http://advisories.mageia.org
 advisories_repo_url: svn+ssh://svn.mageia.org/svn/advisories

@@ -8,9 +8,9 @@
         <h1>Mageia Advisories</h1>
         <ul>
             [% FOREACH rel IN advdb.by_rel.keys.sort -%]
-            <li><a href="[% basename.rel(rel) %].html">Mageia [% rel %] advisories</a></li>
+            <li><a href="[% basename.rel(rel) %].html">Mageia [% rel %] advisories</a> <a href="[% basename.rel(rel) %].rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
             [%- END -%]
-            <li><a href="advisories.html">All advisories</a></li>
+            <li><a href="advisories.html">All advisories</a> <a href="advisories.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
         </ul>
 
         <h1>CVE list</h1>

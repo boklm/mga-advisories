@@ -3,9 +3,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Mageia [% rel %] Advisories</title>
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="[% config.site_url %]/[% basename.rel(rel) %].rss" />
     </head>
     <body>
-        <h1>Mageia [% rel %] Advisories</h1>
+        <h1>Mageia [% rel %] Advisories <a href="[% basename.rel(rel) %].rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></h1>
 
         [% INCLUDE advisories_table.html advlst = advdb.by_rel.$rel %]
     </body>
