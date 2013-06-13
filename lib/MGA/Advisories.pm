@@ -233,4 +233,25 @@ sub listadv {
         sort keys %{$advdb->{advisories}};
 }
 
+sub showadv {
+    my ($advdb, $adv) = @_;
+    if (!$advdb->{advisories}{$adv}) {
+        print STDERR "Cannot find advisory $adv\n";
+        return undef;
+    }
+    my $template = Template->new(
+        INCLUDE_PATH => $config->{tmpl_dir},
+    );
+    my $vars = {
+        config   => $config,
+        advisory => $adv,
+        advdb    => $advdb,
+        basename => \%basename,
+        tools    => \%tools,
+    };
+    my $advtxt;
+    process_template($template, 'advisory', $vars, \$advtxt, 'txt');
+    print $advtxt;
+}
+
 1;

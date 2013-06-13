@@ -1,5 +1,6 @@
 - add 'new' command to add a new advisory
 - add 'list' command to list advisories
+- add 'show' command to show an advisory
 
 Version 0.4
 
