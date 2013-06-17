@@ -1,3 +1,4 @@
+- don't save status for unpublished advisories
 - fix display of publication date
 
 Version 0.8

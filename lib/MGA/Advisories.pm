@@ -50,6 +50,7 @@ sub status_file {
 
 sub save_status {
     my ($advdb, $adv) = @_;
+    return if $advdb->{advisories}{$adv}{no_save_status};
     my $statusfile = status_file($adv);
     DumpFile($statusfile, $advdb->{advisories}{$adv}{status});
 }
@@ -61,6 +62,7 @@ sub get_advisories_from_dir {
         if (!$adv->{ID}) {
             next unless $config->{mode} eq 'qa';
             $adv->{ID} = next_id('TODO', keys %advisories);
+            $adv->{no_save_status} = 1;
         }
         report_exit("Duplicate advisory $adv->{ID}") if $advisories{$adv->{ID}};
         report_exit("Unknown type $adv->{type}") unless
@@ -244,6 +246,7 @@ sub send_adv_mail {
     );
     foreach my $adv (keys %{$advdb->{advisories}}) {
         next if $advdb->{advisories}{$adv}{no_mail};
+        next if $advdb->{advisories}{$adv}{no_save_status};
         next if $advdb->{advisories}{$adv}{status}{mail_sent};
         my $mailcontent;
         my $vars = {
