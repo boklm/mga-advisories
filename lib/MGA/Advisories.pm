@@ -243,6 +243,7 @@ sub send_adv_mail {
         INCLUDE_PATH => $config->{tmpl_dir},
     );
     foreach my $adv (keys %{$advdb->{advisories}}) {
+        next if $advdb->{advisories}{$adv}{no_mail};
         next if $advdb->{advisories}{$adv}{status}{mail_sent};
         my $mailcontent;
         my $vars = {

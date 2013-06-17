@@ -1,3 +1,5 @@
+- add 'no_mail' option in advisory file to disable advisory mail
+
 Version 0.7
 
 - list unpublished advisories when mode is set to 'qa'
