@@ -60,6 +60,8 @@ sub get_advisories_from_dir {
         my $adv = LoadFile($advfile);
         next unless $adv->{ID};
         report_exit("Duplicate advisory $adv->{ID}") if $advisories{$adv->{ID}};
+        report_exit("Unknown type $adv->{type}") unless
+                $config->{advisory_types}{$adv->{type}};
         $advisories{$adv->{ID}} = $adv;
         my $statusfile = status_file($adv->{ID});
         $adv->{status} = -f $statusfile ? LoadFile($statusfile) : {};
