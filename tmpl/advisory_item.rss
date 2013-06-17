@@ -7,7 +7,7 @@
             <category>[% advisory.type %]</category>
             <description>
 
-        Publication date: [% date.format(advisory.pubtime, format => '%d %b %Y', gmt => 1) %]&lt;br /&gt;
+        Publication date: [% date.format(advisory.status.published, format => '%d %b %Y', gmt => 1) %]&lt;br /&gt;
         Type: [% advisory.type %]&lt;br /&gt;
         Affected Mageia releases :
         [% SET sep = '' %]

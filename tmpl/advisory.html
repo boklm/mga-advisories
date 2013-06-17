@@ -8,7 +8,7 @@
     <body>
         <h1>[% advisory %] - [% adv.subject %]</h1>
 
-        Publication date: [% date.format(adv.pubtime, format => '%d %b %Y', gmt => 1) %]<br />
+        Publication date: [% date.format(adv.status.published, format => '%d %b %Y', gmt => 1) %]<br />
         Type: [% adv.type %]<br />
         Affected Mageia releases :
         [% SET sep = '' %]

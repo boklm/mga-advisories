@@ -23,7 +23,7 @@
             [% FOREACH adv IN advlst %]
             <tr>
                 <td width='100'>
-                    [% date.format(advdb.advisories.$adv.pubtime, format => '%Y-%m-%d', gmt => 1) %]
+                    [% date.format(advdb.advisories.$adv.status.published, format => '%Y-%m-%d', gmt => 1) %]
                 </td>
                 <td width='150'><a href="[% basename.ID(adv) %].html">[% adv %]</a></td>
                 <td>
