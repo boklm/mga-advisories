@@ -19,7 +19,7 @@
         &lt;br /&gt;
 
         [% SET sep = '' %]
-        [% IF advisory.CVE.list.size != 0 %]
+        [% IF advisory.CVE && advisory.CVE.list.size != 0 %]
         CVE:
         [% FOREACH cve IN advisory.CVE %]
         [% sep %]
