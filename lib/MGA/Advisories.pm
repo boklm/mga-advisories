@@ -111,7 +111,6 @@ sub download_advisories {
     die "Error loading $config->{dump_url}" unless $resp->is_success;
     my $newadvisories = Load($resp->decoded_content);
     my @newadv = grep { ! $oldadvisories->{$_} } keys %$newadvisories;
-    #dd \@newadv;
     if (@newadv) {
         my %n;
         my @v = @{$newadvisories}{@newadv};
