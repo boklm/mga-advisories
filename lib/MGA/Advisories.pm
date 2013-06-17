@@ -40,7 +40,7 @@ sub report_log {
 
 sub report_exit {
     report_log($_[0]);
-    send_report_mail({ error => $_[0] });
+    send_report({ error => $_[0] });
     exit 1;
 }
 
@@ -262,30 +262,32 @@ sub send_adv_mail {
     }
 }
 
-sub send_report_mail {
+sub send_report {
     my ($advdb) = @_;
-    return unless $config->{send_report_mail} eq 'yes';
-    return unless $config->{mode} eq 'site';
     return unless @report_logs;
     my $template = Template->new(
         INCLUDE_PATH => $config->{tmpl_dir},
     );
-    my $mailcontent;
+    my $reportcontent;
     my $vars = {
         config      => $config,
         advdb       => $advdb,
         report_logs => \@report_logs,
     };
-    process_template($template, 'report', $vars, \$mailcontent, 'txt');
-    my $email = Email::Simple->create(
-        header => [
-            To   => $config->{report_mail_to},
-            From => $config->{report_mail_from},
-            Subject => $advdb->{error} ? 'Advisories Error' : 'Advisories Update',
-        ],
-        body   => $mailcontent
-    );
-    try_to_sendmail($email);
+    process_template($template, 'report', $vars, \$reportcontent, 'txt');
+    if ($config->{send_report_mail} eq 'yes' && $config->{mode} eq 'site') {
+        my $email = Email::Simple->create(
+            header => [
+                To   => $config->{report_mail_to},
+                From => $config->{report_mail_from},
+                Subject => $advdb->{error} ? 'Advisories Error' : 'Advisories Update',
+            ],
+            body   => $reportcontent
+        );
+        try_to_sendmail($email);
+    } else {
+        print $reportcontent;
+    }
 }
 
 sub dumpdb {

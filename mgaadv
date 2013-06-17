@@ -115,7 +115,7 @@ sub mksite {
     MGA::Advisories::output_pages(\%advdb);
     MGA::Advisories::dumpdb(\%advdb);
     MGA::Advisories::send_adv_mail(\%advdb);
-    MGA::Advisories::send_report_mail(\%advdb);
+    MGA::Advisories::send_report(\%advdb);
 }
 
 sub editor { $ENV{EDITOR} || $ENV{VISUAL} || '/usr/bin/editor' }
