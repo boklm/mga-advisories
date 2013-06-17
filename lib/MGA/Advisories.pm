@@ -84,8 +84,12 @@ sub assign_id {
         print STDERR "$bugnum already has an ID assigned: $adv->{ID}\n";
         return;
     }
-    $adv->{ID} = next_id($config->{advisory_types}{$adv->{type}}{prefix},
-        keys %{get_advisories_from_dir()});
+    my $type = $config->{advisory_types}{$adv->{type}}{prefix};
+    if (!$type) {
+        print STDERR "Unknow type $adv->{type}\n";
+        return;
+    }
+    $adv->{ID} = next_id($type, keys %{get_advisories_from_dir()});
     open(my $fh, '>>', $advfile) or die "Error opening $advfile";
     print $fh "ID: $adv->{ID}\n";
     close $fh;
