@@ -58,7 +58,10 @@ sub get_advisories_from_dir {
     my %advisories;
     foreach my $advfile (glob "$config->{advisories_dir}/*.adv") {
         my $adv = LoadFile($advfile);
-        next unless $adv->{ID};
+        if (!$adv->{ID}) {
+            next unless $config->{mode} eq 'qa';
+            $adv->{ID} = next_id('TODO', keys %advisories);
+        }
         report_exit("Duplicate advisory $adv->{ID}") if $advisories{$adv->{ID}};
         report_exit("Unknown type $adv->{type}") unless
                 $config->{advisory_types}{$adv->{type}};

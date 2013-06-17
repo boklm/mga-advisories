@@ -1,3 +1,4 @@
+- list unpublished advisories when mode is set to 'qa'
 - add 'nextid' and 'publish' commands to assign an ID to an advisory file
 
 Version 0.6
