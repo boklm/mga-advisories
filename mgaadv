@@ -45,6 +45,24 @@ Create a new advisory file. [type] should be security or bugfix and
 [bugnum] is the bugzilla bug number.
 END
     },
+    nextid  => {
+        run   => \&nextid,
+        descr => 'Print next available ID',
+        usage => <<END,
+$0 nextid [type]
+
+Print the next unused advisory ID for [type].
+END
+    },
+    publish => {
+        run => \&publish,
+        descr => 'Assign an ID to an advisory file',
+        usage => <<END
+$0 publish [bugnum]
+
+Assign a new ID to an advisory file.
+END
+    },
     show   => {
         run   => \&showadv,
         descr => 'Show an advisory',
@@ -109,6 +127,23 @@ sub newadv {
     if ($file) {
         system(editor, $file);
     }
+}
+
+sub nextid {
+    usageexit('usage', $_[0]) unless @_ == 2;
+    my $type = $_[1];
+    if (!$MGA::Advisories::config->{advisory_types}{$type}) {
+        print STDERR "Unknown type $type\n";
+        exit 1;
+    }
+    print MGA::Advisories::next_id(
+        $MGA::Advisories::config->{advisory_types}{$type}{prefix},
+        keys %{MGA::Advisories::get_advisories()}), "\n";
+}
+
+sub publish {
+    usageexit('usage', $_[0]) unless @_ == 2;
+    MGA::Advisories::assign_id($_[1]);
 }
 
 sub listadv {

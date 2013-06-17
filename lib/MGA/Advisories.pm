@@ -67,6 +67,29 @@ sub get_advisories_from_dir {
     return \%advisories;
 }
 
+sub next_id {
+    my $prefix = shift;
+    my $year = DateTime->now->year;
+    my $newid = (0, sort map { m/^$prefix-$year-(\d+)$/ ? int $1 : () } @_)[-1] + 1;
+    return sprintf("%s-%s-%.4d", $prefix, $year, $newid);
+}
+
+sub assign_id {
+    my ($bugnum) = @_;
+    my $advfile = "$config->{advisories_dir}/$bugnum.adv";
+    my $adv = LoadFile($advfile);
+    if ($adv->{ID}) {
+        print STDERR "$bugnum already has an ID assigned: $adv->{ID}\n";
+        return;
+    }
+    $adv->{ID} = next_id($config->{advisory_types}{$adv->{type}}{prefix},
+        keys %{get_advisories_from_dir()});
+    open(my $fh, '>>', $advfile) or die "Error opening $advfile";
+    print $fh "ID: $adv->{ID}\n";
+    close $fh;
+    print "Assigned ID $adv->{ID} to advisory $bugnum\n";
+}
+
 sub advdb_dumpfile {
     $config->{advdb_dumpfile} || $ENV{HOME} . '/.mga-advisories/advisories.yaml';
 }

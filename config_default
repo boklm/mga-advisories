@@ -10,3 +10,8 @@ output_format:
 out_dir: /var/lib/mga-advisories/out
 site_url: http://advisories.mageia.org
 advisories_repo_url: svn+ssh://svn.mageia.org/svn/advisories
+advisory_types:
+  bugfix:
+    prefix: MGAA
+  security:
+    prefix: MGASA

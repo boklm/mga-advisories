@@ -1,3 +1,5 @@
+- add 'nextid' and 'publish' commands to assign an ID to an advisory file
+
 Version 0.6
 
 - Fix hash which was not dereferenced
