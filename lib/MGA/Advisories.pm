@@ -143,8 +143,9 @@ sub publish_advisories {
 sub adv_sort {
     my $advdb = shift;
     sort {
-        my $pa = $advdb->{advisories}{$a}{status}{published};
-        my $pb = $advdb->{advisories}{$b}{status}{published};
+        my $now = time;
+        my $pa = $advdb->{advisories}{$a}{status}{published} || $now;
+        my $pb = $advdb->{advisories}{$b}{status}{published} || $now;
         return $pa == $pb ? $b cmp $a : $pb cmp $pa;
     } @_;
 }
