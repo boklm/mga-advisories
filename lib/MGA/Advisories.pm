@@ -292,7 +292,7 @@ sub send_report {
         );
         try_to_sendmail($email);
     } else {
-        print $reportcontent;
+        print { $advdb->{error} ? *STDERR : *STDOUT } $reportcontent;
     }
 }
 
