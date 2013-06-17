@@ -328,9 +328,18 @@ sub newadv {
 }
 
 sub listadv {
-    my ($advdb) = @_;
-    print map { "$_ . $advdb->{advisories}{$_}{subject}\n" } 
-        adv_sort($advdb, keys %{$advdb->{advisories}});
+    my ($advdb, @filter) = @_;
+    my @advlist = keys %{$advdb->{advisories}};
+    foreach my $f (@filter) {
+        my $l = $advdb->{by_type}{$f} || $advdb->{by_cve}{$f}
+                || $advdb->{by_rel}{$f} || $advdb->{by_media}{$f}
+                || $advdb->{by_src}{$f} || [];
+        my %z;
+        @z{@$l} = (1) x @$l;
+        @advlist = grep { $z{$_} } @advlist;
+    }
+    print map { "$_ . $advdb->{advisories}{$_}{subject}\n" }
+        adv_sort($advdb, @advlist);
 }
 
 sub showadv {

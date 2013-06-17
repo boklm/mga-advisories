@@ -21,9 +21,30 @@ END
         run   => \&listadv,
         descr => 'List advisories',
         usage => <<END,
-$0 list
+$0 list [filter...]
 
-Print the list of published advisories
+Print the list of published advisories. Optionally you can filter the
+list with one or more filters. Possible filters are :
+- advisory type
+- distribution release
+- package name
+- CVE
+- media
+
+Examples :
+ 
+ list advisories for package wireshark :
+ \$ mgaadv list wireshark
+
+ list security advisories for package wireshark :
+ \$ mgaadv list security wireshark
+
+ list advisories for CVE CVE-2013-3560
+ \$ mgaadv list CVE-2013-3560
+
+ list advisories for Mageia 2 in media tainted :
+ \$ mgaadv list 2 tainted
+
 END
     },
     mksite => {
@@ -147,10 +168,11 @@ sub publish {
 }
 
 sub listadv {
-    usageexit('usage', $_[0]) unless @_ == 1;
+    shift;
     my %advdb;
     $advdb{advisories} = MGA::Advisories::get_advisories();
-    MGA::Advisories::listadv(\%advdb);
+    MGA::Advisories::sort_advisories(\%advdb) if @_;
+    MGA::Advisories::listadv(\%advdb, @_);
 }
 
 sub showadv {

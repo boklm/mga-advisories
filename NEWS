@@ -1,5 +1,6 @@
 - don't save status for unpublished advisories
 - fix display of publication date
+- list command now accept filters to filter results
 
 Version 0.8
 
