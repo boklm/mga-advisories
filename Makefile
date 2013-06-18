@@ -1,4 +1,4 @@
-VERSION=0.9
+VERSION=0.10
 
 PROJECTNAME=mga-advisories
 BINFILES=mgaadv
