@@ -1,4 +1,6 @@
 mode: dump
+send_adv_mail: no
+send_report_mail: no
 dump_url: http://advisories.mageia.org/advisories.yaml
 advisories_dir: /var/lib/mga-advisories/advisories
 status_dir: /var/lib/mga-advisories/status

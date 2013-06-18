@@ -1,3 +1,6 @@
+
+- set defaults for send_adv_mail and send_report_mail
+
 Version 0.9
 
 - don't save status for unpublished advisories
