@@ -38,6 +38,11 @@
             [% FOREACH ref IN advisory.references -%]
             &lt;li&gt;&lt;a href="[% ref %]"&gt;[% ref %]&lt;/a&gt;&lt;/li&gt;
             [% END %]
+            [%- IF advisory.CVE -%]
+            [%- FOREACH cve IN advisory.CVE.list -%]
+            &lt;li&gt;&lt;a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% cve %]"&gt;http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% cve %]&lt;/a&gt;&lt;/li&gt;
+            [%- END -%]
+            [%- END -%]
         &lt;/ul&gt;
 
         &lt;h2&gt;SRPMS&lt;/h2&gt;

@@ -17,6 +17,11 @@ References:
 [% FOREACH ref IN adv.references -%]
 - [% ref %]
 [% END -%]
+[% IF adv.CVE -%]
+[% FOREACH cve IN adv.CVE.list -%]
+- http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% cve %]
+[% END -%]
+[% END -%]
 
 SRPMS:
 [% FOREACH rel IN adv.src.keys -%]
