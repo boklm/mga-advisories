@@ -77,7 +77,8 @@ sub get_advisories_from_dir {
 sub next_id {
     my $prefix = shift;
     my $year = DateTime->now->year;
-    my $newid = (0, sort { $a <=> $b } map { m/^$prefix-$year-(\d+)$/ ? int $1 : () } @_)[-1] + 1;
+    my @used_ids = map { m/^$prefix-$year-(\d+)$/ ? int $1 : () } @_;
+    my $newid = (0, sort { $a <=> $b } @used_ids)[-1] + 1;
     return sprintf("%s-%s-%.4d", $prefix, $year, $newid);
 }
 
