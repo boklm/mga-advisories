@@ -11,7 +11,7 @@
         <h1 id='mgnavt'><a href="index.html">Advisories</a> » Mageia [% rel %] <a href="[% basename.rel(rel) %].rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></h1>
 
         <div class='content'>
-        [% INCLUDE advisories_table.html advlst = advdb.by_rel.$rel %]
+            [% INCLUDE advisories_table.html advlst = advdb.by_rel.$rel %]
         </div>
     </body>
 </html>

@@ -10,11 +10,11 @@
         <h1 id='mgnavt'><a href="index.html">Advisories</a> » CVE list</h1>
 
         <div class='content'>
-        <ul>
-            [% FOREACH CVE IN advdb.by_cve.keys.sort.reverse %]
-            <li><a href="[% basename.CVE(CVE) %].html">[% CVE %]</a></li>
-            [% END %]
-        </ul>
+            <ul>
+                [% FOREACH CVE IN advdb.by_cve.keys.sort.reverse %]
+                <li><a href="[% basename.CVE(CVE) %].html">[% CVE %]</a></li>
+                [% END %]
+            </ul>
         </div>
     </body>
 </html>

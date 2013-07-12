@@ -10,7 +10,7 @@
         <h1 id='mgnavt'><a href="index.html">Advisories</a> » <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% CVE %]">[% CVE %]</a></h1>
 
         <div class='content'>
-        [% INCLUDE advisories_table.html advlst = advdb.by_cve.$CVE %]
+            [% INCLUDE advisories_table.html advlst = advdb.by_cve.$CVE %]
         </div>
     </body>
 </html>

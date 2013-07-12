@@ -11,65 +11,65 @@
         <h1 id='mgnavt'><a href="index.html">Advisories</a> » [% advisory %]</h1>
 
         <div class='content'>
-        <div class='section'>
-        <h2>[% adv.subject %]</h2>
+            <div class='section'>
+                <h2>[% adv.subject %]</h2>
 
-        Publication date: [% date.format(adv.status.published, format => '%d %b %Y', gmt => 1) %]<br />
-        Type: [% adv.type %]<br />
-        Affected Mageia releases :
-        [% SET sep = '' %]
-        [% FOREACH rel IN adv.src.keys.sort %]
-        [% sep %]
-        [% SET sep = ', ' %]
-        <a href="[% basename.rel(rel) %].html">[% rel %]</a>
-        [% END %]
-        <br />
+                Publication date: [% date.format(adv.status.published, format => '%d %b %Y', gmt => 1) %]<br />
+                Type: [% adv.type %]<br />
+                Affected Mageia releases :
+                [% SET sep = '' %]
+                [% FOREACH rel IN adv.src.keys.sort %]
+                [% sep %]
+                [% SET sep = ', ' %]
+                <a href="[% basename.rel(rel) %].html">[% rel %]</a>
+                [% END %]
+                <br />
 
-        [% SET sep = '' %]
-        [% IF adv.CVE && adv.CVE.list.size != 0 %]
-        CVE:
-        [% FOREACH cve IN adv.CVE %]
-        [% sep %]
-        [% SET sep = ', ' %]
-        <a href="[% basename.CVE(cve) %].html">[% cve %]</a>
-        [% END %]
-        [% END %]
-        </div>
+                [% SET sep = '' %]
+                [% IF adv.CVE && adv.CVE.list.size != 0 %]
+                CVE:
+                [% FOREACH cve IN adv.CVE %]
+                [% sep %]
+                [% SET sep = ', ' %]
+                <a href="[% basename.CVE(cve) %].html">[% cve %]</a>
+                [% END %]
+                [% END %]
+            </div>
 
-        <div class='section'>
-        <h2>Description</h2>
-        <pre>
-        [%- adv.description -%]
-        </pre>
-        </div>
+            <div class='section'>
+                <h2>Description</h2>
+                <pre>
+                [%- adv.description -%]
+                </pre>
+            </div>
 
-        <div class='section'>
-        <h2>References</h2>
-        <ul>
-            [% FOREACH ref IN adv.references -%]
-            <li><a href="[% ref %]">[% ref %]</a></li>
-            [% END %]
-            [%- IF adv.CVE -%]
-            [%- FOREACH cve IN adv.CVE.list -%]
-            <li><a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% cve %]">http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% cve %]</a></li>
-            [%- END -%]
-            [%- END -%]
-        </ul>
-        </div>
+            <div class='section'>
+                <h2>References</h2>
+                <ul>
+                    [% FOREACH ref IN adv.references -%]
+                    <li><a href="[% ref %]">[% ref %]</a></li>
+                    [% END %]
+                    [%- IF adv.CVE -%]
+                    [%- FOREACH cve IN adv.CVE.list -%]
+                    <li><a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% cve %]">http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% cve %]</a></li>
+                    [%- END -%]
+                    [%- END -%]
+                </ul>
+            </div>
 
-        <div class='section'>
-        <h2>SRPMS</h2>
-        [% FOREACH rel IN adv.src.keys -%]
-        [% FOREACH media IN adv.src.$rel.keys -%]
-        <h3>[% rel %]/[% media %]</h3>
-        <ul>
-        [% FOREACH srpm IN adv.src.$rel.$media -%]
-                <li>[% srpm %]</li>
-        [% END -%]
-        </ul>
-        [% END -%]
-        [% END -%]
-        </div>
+            <div class='section'>
+                <h2>SRPMS</h2>
+                [% FOREACH rel IN adv.src.keys -%]
+                [% FOREACH media IN adv.src.$rel.keys -%]
+                <h3>[% rel %]/[% media %]</h3>
+                <ul>
+                    [% FOREACH srpm IN adv.src.$rel.$media -%]
+                    <li>[% srpm %]</li>
+                    [% END -%]
+                </ul>
+                [% END -%]
+                [% END -%]
+            </div>
         </div>
     </body>
 </html>

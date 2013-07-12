@@ -9,43 +9,43 @@
         [%- INCLUDE body_top.html -%]
         <h1 id='mgnavt'>Mageia Advisories</h1>
         <div class="content">
-        <div class="section">
-        <h2>Advisories</h2>
-        <ul>
-            [% FOREACH rel IN advdb.by_rel.keys.sort -%]
-            <li><a href="[% basename.rel(rel) %].html">Mageia [% rel %] advisories</a> <a href="[% basename.rel(rel) %].rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
-            [%- END -%]
-            <li><a href="advisories.html">All advisories</a> <a href="advisories.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
-        </ul>
-        </div>
+            <div class="section">
+                <h2>Advisories</h2>
+                <ul>
+                    [% FOREACH rel IN advdb.by_rel.keys.sort -%]
+                    <li><a href="[% basename.rel(rel) %].html">Mageia [% rel %] advisories</a> <a href="[% basename.rel(rel) %].rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
+                    [%- END -%]
+                    <li><a href="advisories.html">All advisories</a> <a href="advisories.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
+                </ul>
+            </div>
 
-        <div class="section">
-        <h2>CVE list</h2>
-        A list of fixed CVE <a href="CVE.html">is available</a>.
-        </div>
+            <div class="section">
+                <h2>CVE list</h2>
+                A list of fixed CVE <a href="CVE.html">is available</a>.
+            </div>
 
-        <div class="section">
-        <h2>Command line tool</h2>
-        A command line tool is available to list and display advisories.
-        <a href="https://wiki.mageia.org/en/Mgaadv#Command_line_tool">More details</a>.
-        </div>
+            <div class="section">
+                <h2>Command line tool</h2>
+                A command line tool is available to list and display advisories.
+                <a href="https://wiki.mageia.org/en/Mgaadv#Command_line_tool">More details</a>.
+            </div>
 
-        <div class="section">
-        <h2>Older Advisories</h2>
-        Older advisories are available on <a href="https://wiki.mageia.org/en/Support/Advisories/">Mageia wiki</a>.
-        </div>
+            <div class="section">
+                <h2>Older Advisories</h2>
+                Older advisories are available on <a href="https://wiki.mageia.org/en/Support/Advisories/">Mageia wiki</a>.
+            </div>
 
-        <div class="section">
-        <h2>DB Dump</h2>
-        A dump of all advisories is available as <a href="advisories.yaml">a yaml file</a>.
-        </div>
+            <div class="section">
+                <h2>DB Dump</h2>
+                A dump of all advisories is available as <a href="advisories.yaml">a yaml file</a>.
+            </div>
 
-        <div class="section">
-        <h2>Source code</h2>
-        Source code for the tool used to generate this website is
-        <a href="http://svnweb.mageia.org/soft/mga-advisories/trunk/">available on svn</a>.
-        Patches or ideas can be posted on the <a href="https://ml.mageia.org/l/info/sysadmin-discuss">sysadmin-discuss</a> mailing list.
-        </div>
+            <div class="section">
+                <h2>Source code</h2>
+                Source code for the tool used to generate this website is
+                <a href="http://svnweb.mageia.org/soft/mga-advisories/trunk/">available on svn</a>.
+                Patches or ideas can be posted on the <a href="https://ml.mageia.org/l/info/sysadmin-discuss">sysadmin-discuss</a> mailing list.
+            </div>
         </div>
     </body>
 </html>
