@@ -4,9 +4,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Mageia Advisory: [% advisory %] - [% adv.subject %]</title>
+        [%- INCLUDE head.html -%]
     </head>
     <body>
-        <h1>[% advisory %] - [% adv.subject %]</h1>
+        [%- INCLUDE body_top.html -%]
+        <h1 id='mgnavt'><a href="index.html">Advisories</a> » [% advisory %]</h1>
+
+        <div class='content'>
+        <div class='section'>
+        <h2>[% adv.subject %]</h2>
 
         Publication date: [% date.format(adv.status.published, format => '%d %b %Y', gmt => 1) %]<br />
         Type: [% adv.type %]<br />
@@ -28,12 +34,16 @@
         <a href="[% basename.CVE(cve) %].html">[% cve %]</a>
         [% END %]
         [% END %]
+        </div>
 
+        <div class='section'>
         <h2>Description</h2>
         <pre>
         [%- adv.description -%]
         </pre>
+        </div>
 
+        <div class='section'>
         <h2>References</h2>
         <ul>
             [% FOREACH ref IN adv.references -%]
@@ -45,7 +55,9 @@
             [%- END -%]
             [%- END -%]
         </ul>
+        </div>
 
+        <div class='section'>
         <h2>SRPMS</h2>
         [% FOREACH rel IN adv.src.keys -%]
         [% FOREACH media IN adv.src.$rel.keys -%]
@@ -57,6 +69,7 @@
         </ul>
         [% END -%]
         [% END -%]
-
+        </div>
+        </div>
     </body>
 </html>

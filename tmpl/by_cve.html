@@ -3,10 +3,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% CVE %]</title>
+        [%- INCLUDE head.html -%]
     </head>
     <body>
-        <h1><a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% CVE %]">[% CVE %]</a></h1>
+        [%- INCLUDE body_top.html -%]
+        <h1 id='mgnavt'><a href="index.html">Advisories</a> » <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=[% CVE %]">[% CVE %]</a></h1>
 
+        <div class='content'>
         [% INCLUDE advisories_table.html advlst = advdb.by_cve.$CVE %]
+        </div>
     </body>
 </html>
