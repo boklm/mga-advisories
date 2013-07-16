@@ -194,7 +194,9 @@ sub process_template {
     my ($template, $src, $vars, $dest, $ext) = @_;
     foreach my $extension ($ext ? $ext : @{$config->{output_format}}) {
         next unless -f "$config->{tmpl_dir}/$src.$extension";
-        $template->process("$src.$extension", $vars, ref $dest ? $dest : "$dest.$extension")
+        $template->process("$src.$extension", $vars,
+                           ref $dest ? $dest : "$dest.$extension",
+                           binmode => ':utf8')
                 || die $template->error, "\n";
     }
 }
