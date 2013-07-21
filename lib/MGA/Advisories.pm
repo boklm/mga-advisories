@@ -85,6 +85,7 @@ sub next_id {
 sub assign_id {
     my ($bugnum) = @_;
     my $advfile = "$config->{advisories_dir}/$bugnum.adv";
+    $advfile =~ s/\.adv\.adv$/.adv/;
     my $adv = LoadFile($advfile);
     if ($adv->{ID}) {
         print STDERR "$bugnum already has an ID assigned: $adv->{ID}\n";
