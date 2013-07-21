@@ -205,6 +205,7 @@ sub process_template {
 sub output_pages {
     my ($advdb) = @_;
     my $template = Template->new(
+        ENCODING     => 'utf8',
         INCLUDE_PATH => $config->{tmpl_dir},
         OUTPUT_PATH  => $config->{out_dir},
     );
@@ -246,6 +247,7 @@ sub send_adv_mail {
     return unless $config->{send_adv_mail} eq 'yes';
     return unless $config->{mode} eq 'site';
     my $template = Template->new(
+        ENCODING     => 'utf8',
         INCLUDE_PATH => $config->{tmpl_dir},
     );
     foreach my $adv (keys %{$advdb->{advisories}}) {
@@ -283,6 +285,7 @@ sub send_report {
     my ($advdb) = @_;
     return unless @report_logs;
     my $template = Template->new(
+        ENCODING     => 'utf8',
         INCLUDE_PATH => $config->{tmpl_dir},
     );
     my $reportcontent;
@@ -322,6 +325,7 @@ sub newadv {
     my $template = Template->new(
         INCLUDE_PATH => $config->{tmpl_dir},
         OUTPUT_PATH  => $config->{advisories_dir},
+        ENCODING     => 'utf8',
     );
     my $vars = {
         type   => $type,
@@ -353,6 +357,7 @@ sub showadv {
         return undef;
     }
     my $template = Template->new(
+        ENCODING     => 'utf8',
         INCLUDE_PATH => $config->{tmpl_dir},
     );
     my $vars = {
