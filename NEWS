@@ -1,3 +1,4 @@
+Version 0.13
 
 - set template output to utf8
 - allow specifying .adv extension with the publish command
