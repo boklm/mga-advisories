@@ -1,3 +1,6 @@
+
+- correctly encode html in rss feed
+
 Version 0.14
 
 - set ENCODING when creating templates
