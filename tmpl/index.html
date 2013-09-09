@@ -1,51 +1,153 @@
-[%- USE date(format='%Y/%m/%d') -%]
+[%- USE JSON ( pretty => 1 ) -%]
+[%- USE date -%]
+[%-
+  jsadvdb = [];
+  mga_releases = {};
+  FOREACH adv IN advdb.sorted;
+     a = {};
+     a.src = [];
+     pkgs = {};
+     FOREACH rel IN advdb.advisories.$adv.src.keys;
+        FOREACH media IN advdb.advisories.$adv.src.$rel.keys;
+                FOREACH srpm IN advdb.advisories.$adv.src.$rel.$media;
+                        SET srcname = tools.pkgname(srpm);
+                        IF ! pkgs.$srcname;
+                                pkgs.$srcname = 1;
+                                a.src.push(srcname);
+                        END;
+                END;
+        END;
+     END;
+     a.CVE = advdb.advisories.$adv.CVE;
+     a.rel = advdb.advisories.$adv.src.keys;
+     FOREACH rel IN a.rel;
+        mga_releases.$rel = 1;
+     END;
+     a.type = advdb.advisories.$adv.type;
+     html = BLOCK -%]
+     <tr>
+         <td width='100'>
+             [% date.format(advdb.advisories.$adv.status.published, format => '%Y-%m-%d', gmt => 1) %]
+         </td>
+         <td width='150'><a href="[% basename.ID(adv) %].html">[% adv %]</a></td>
+         <td>
+                [% SET sep = '' %]
+                [% FOREACH srcname IN a.src -%]
+                        [%- sep -%]
+                        [%- SET sep = ', ' -%]
+                        <a href="[% basename.src(srcname) %].html">[% srcname %]</a>
+                [%- END -%]
+         </td>
+         <td>[% advdb.advisories.$adv.type %]</td>
+         <td>
+                [% SET sep = '' %]
+                [% FOREACH rel IN advdb.advisories.$adv.src.keys %]
+                [% sep %]
+                [% SET sep = ', ' %]
+                <a href="[% basename.rel(rel) %].html">[% rel %]</a>
+                [% END %]
+         </td>
+         <td>
+                [% SET sep = '' %]
+                [% FOREACH cve IN advdb.advisories.$adv.CVE %]
+                [% sep %]
+                [% SET sep = ', ' %]
+                <a href="[% basename.CVE(cve) %].html">[% cve %]</a>
+                [% END %]
+         </td>
+     </tr>
+     [%- END;
+     a.html = html.collapse;
+     jsadvdb.push(a);
+  END;
+-%]
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Mageia Advisories</title>
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="[% config.site_url %]/advisories.rss" />
         [%- INCLUDE head.html -%]
+        <script type="text/javascript">
+            function make_table() {
+                var advdb = [% jsadvdb.json %];
+                var table_start = "<table id='adv_table' border='0'>\
+                        <tr>\
+                                <th>\
+                                        Date\
+                                </th>\
+                                <th>\
+                                        ID\
+                                </th>\
+                                <th>\
+                                        Source Package(s)\
+                                </th>\
+                                <th>\
+                                        Type\
+                                </th>\
+                                <th>\
+                                        Affected release(s)\
+                                </th>\
+                                <th>\
+                                        CVE\
+                                </th>\
+                        </tr>";
+                var table_end = "</table>";
+                var table_content = '';
+                var rel_index = document.getElementById('sel_rel').selectedIndex;
+                var rel = document.getElementById('sel_rel').options[rel_index].text;
+                var type_index = document.getElementById('sel_type').selectedIndex;
+                var type = document.getElementById('sel_type').options[type_index].text;
+                for (var i = 0; i < advdb.length; i++) {
+                    if (rel != 'all' && advdb[i].rel.indexOf(rel) == -1)
+                        continue;
+                    if (type != 'all' && type != advdb[i].type)
+                        continue;
+                    var input_src = document.getElementById("txt_src").value;
+                    if (input_src != '' && advdb[i].src.indexOf(input_src) == -1)
+                        continue;
+                    var input_cve = document.getElementById("txt_cve").value;
+                    if (input_cve != '' && advdb[i].CVE.indexOf(input_cve) == -1)
+                        continue;
+                    table_content += advdb[i].html;
+                }
+                if (table_content == '')
+                    document.getElementById("adv_table").innerHTML = 'No matching advisory found';
+                else
+                    document.getElementById("adv_table").innerHTML = table_start + table_content + table_end;
+            }
+        </script>
     </head>
     <body>
         [%- INCLUDE body_top.html -%]
-        <h1 id='mgnavt'>Mageia Advisories</h1>
-        <div class="content">
-            <div class="section">
-                <h2>Advisories</h2>
-                <ul>
-                    [% FOREACH rel IN advdb.by_rel.keys.sort -%]
-                    <li><a href="[% basename.rel(rel) %].html">Mageia [% rel %] advisories</a> <a href="[% basename.rel(rel) %].rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
-                    [%- END -%]
-                    <li><a href="advisories.html">All advisories</a> <a href="advisories.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></li>
-                </ul>
-            </div>
+        <h1 id='mgnavt'><a href="index.html">Advisories</a> <a href="advisories.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="rss" /></a></h1>
 
-            <div class="section">
-                <h2>CVE list</h2>
-                A list of fixed CVE <a href="CVE.html">is available</a>.
-            </div>
+        <div id="adv_menu">
+            <form name="adv_form">
+                Mageia release:
+                <select id="sel_rel" onchange="make_table();">
+                    <option>all</option>
+                    [%- FOREACH rel IN mga_releases.keys.sort %]
+                    <option>[% rel %]</option>
+                    [%- END %]
+                </select>
+                Type:
+                <select id="sel_type" onchange="make_table();">
+                    <option>all</option>
+                    <option>security</option>
+                    <option>bugfix</option>
+                </select>
+                Source package:
+                <input type="text" id="txt_src" size="10" onchange="make_table();" oninput="make_table();" />
+                CVE:
+                <input type="text" id="txt_cve" size="10" onchange="make_table();" oninput="make_table();" />
 
-            <div class="section">
-                <h2>Command line tool</h2>
-                A command line tool is available to list and display advisories.
-                <a href="https://wiki.mageia.org/en/Mgaadv#Command_line_tool">More details</a>.
-            </div>
-
-            <div class="section">
-                <h2>Older Advisories</h2>
-                Older advisories are available on <a href="https://wiki.mageia.org/en/Support/Advisories/">Mageia wiki</a>.
-            </div>
-
-            <div class="section">
-                <h2>DB Dump</h2>
-                A dump of all advisories is available as <a href="advisories.yaml">a yaml file</a>.
-            </div>
-
-            <div class="section">
-                <h2>Source code</h2>
-                Source code for the tool used to generate this website is
-                <a href="http://svnweb.mageia.org/soft/mga-advisories/trunk/">available on svn</a>.
-                Patches or ideas can be posted on the <a href="https://ml.mageia.org/l/info/sysadmin-discuss">sysadmin-discuss</a> mailing list.
-            </div>
+                <a href="infos.html" id="more_infos_link">More infos ...</a>
+            </form>
         </div>
+        <div id="adv_table" class="content">
+        </div>
+        <script type="text/javascript">
+            make_table();
+        </script>
     </body>
 </html>

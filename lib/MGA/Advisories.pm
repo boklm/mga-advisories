@@ -239,6 +239,7 @@ sub output_pages {
     };
     process_template($template, 'index', $vars, 'index');
     process_template($template, 'advisories', $vars, 'advisories');
+    process_template($template, 'infos', $vars, 'infos');
     process_template($template, 'CVE', $vars, 'CVE');
 }
 
