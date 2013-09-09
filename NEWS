@@ -1,5 +1,6 @@
 - move advisories to index, and infos to a separate page
 - add menu to filter advisories list
+- infos.html: update sources URL (svn -> git)
 
 Version 0.15
 
