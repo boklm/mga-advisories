@@ -10,3 +10,10 @@
     padding-top: 1em;
     padding-bottom: 1em;
 }
+
+#adv_menu {
+    text-align: left;
+    padding-left: 2em;
+    padding-top: 1em;
+    background: #fff;
+}
